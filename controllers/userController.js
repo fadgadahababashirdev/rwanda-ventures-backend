@@ -5,11 +5,11 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const createAccount = async (req, res) => {
+  const upload = await uploadToCloud(req.file, res);
+  console.log(upload.secure_url)
   try {
     const genS = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(req.body.password, genS);
-    const upload = await uploadToCloud(req.file, res);
-    console.log(upload.secure_url);
 
     const newUser = await User.create({
       image: upload.secure_url,
